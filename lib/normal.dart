@@ -9,16 +9,18 @@ Builder normalBuilder(BuilderOptions options) {
 class NormalBuilder implements Builder {
   @override
   FutureOr<void> build(BuildStep buildStep) async {
-    final outputAssetId = AssetId(buildStep.inputId.package, 'lib/sample.txt');
+    final input = await buildStep.readAsString(AssetId(buildStep.inputId.package, 'lib/input.txt'));
+
+    final outputAssetId = AssetId(buildStep.inputId.package, 'lib/intermediate.txt');
     await buildStep.writeAsString(
       outputAssetId,
-      'Hello World',
+      input,
     );
     print('Written to $outputAssetId');
   }
 
   @override
   Map<String, List<String>> get buildExtensions => {
-        r'$lib$': ['sample.txt'],
+        r'$lib$': ['intermediate.txt'],
       };
 }

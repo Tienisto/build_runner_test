@@ -11,4 +11,5 @@ post_process_builders:
   post_builder:
     import: 'package:build_runner_test/post.dart'
     builder_factory: 'postBuilder'
-    input_extensions: [ 'sample.txt' ]
+    build_to: source
+    input_extensions: [ 'intermediate.txt' ]

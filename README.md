@@ -1,31 +1,12 @@
-This repo is a demo for a possible bug that `buildStep.writeAsString` within `PostProcessBuilder` does not produce any file,
-even though the method is called and the content is printed in the console.
+This repo is a demo for a possible bug that `buildStep.writeAsString` within `PostProcessBuilder` still
+throws an `InvalidOutputException` (`Asset already exists`) although `--delete-conflicting-outputs` is used.
 
-Reference: https://github.com/dart-lang/build/issues/4364
+Reference: https://github.com/dart-lang/build/issues/4402
 
-```dart
-class PostBuilder implements PostProcessBuilder {
-  @override
-  final inputExtensions = ['sample.txt'];
+Reproduction:
 
-  @override
-  Future<void> build(PostProcessBuildStep buildStep) async {
-    print('Started PostBuilder...');
-
-    final content = await buildStep.readInputAsString();
-
-    final outputAssetId = AssetId(buildStep.inputId.package, 'lib/sample_upper.txt');
-    final outputContent = content.toUpperCase();
-
-    // Does not produce any file.
-    await buildStep.writeAsString(
-      outputAssetId,
-      outputContent,
-    );
-
-    print('Written to $outputAssetId with content: $outputContent');
-
-    buildStep.deletePrimaryInput();
-  }
-}
+```bash
+dart run build_runner build
+rm -rf .dart_tool
+dart run build_runner build --delete-conflicting-outputs
 ```

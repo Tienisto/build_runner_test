@@ -6,7 +6,7 @@ PostProcessBuilder postBuilder(BuilderOptions options) {
 
 class PostBuilder implements PostProcessBuilder {
   @override
-  final inputExtensions = ['sample.txt'];
+  final inputExtensions = ['intermediate.txt'];
 
   @override
   Future<void> build(PostProcessBuildStep buildStep) async {
@@ -14,7 +14,7 @@ class PostBuilder implements PostProcessBuilder {
 
     final content = await buildStep.readInputAsString();
 
-    final outputAssetId = AssetId(buildStep.inputId.package, 'lib/sample_upper.txt');
+    final outputAssetId = AssetId(buildStep.inputId.package, 'lib/output.txt');
     final outputContent = content.toUpperCase();
 
     // Does not produce any file.
