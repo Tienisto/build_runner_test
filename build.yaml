@@ -1,15 +1,23 @@
 builders:
-  normal_builder:
-    import: 'package:build_runner_test/normal.dart'
-    builder_factories: [ 'normalBuilder' ]
-    build_extensions: { '$lib$': [ 'sample.txt' ] }
+  analyzing_builder:
+    import: "package:build_runner_test/builder.dart"
+    builder_factories: [ "analyzingBuilder" ]
+    build_extensions: { ".dart": [ ".g.dart" ] }
+#    auto_apply: none
+    auto_apply: root_package
+    build_to: source
+
+  prepare_post_builder:
+    import: 'package:build_runner_test/builder.dart'
+    builder_factories: [ 'preparePostBuilder' ]
+    build_extensions: { '$lib$': [ 'intermediate.txt' ] }
     auto_apply: root_package
     build_to: cache
     applies_builders: [ ":post_builder" ]
 
 post_process_builders:
   post_builder:
-    import: 'package:build_runner_test/post.dart'
+    import: 'package:build_runner_test/builder.dart'
     builder_factory: 'postBuilder'
     build_to: source
     input_extensions: [ 'intermediate.txt' ]
